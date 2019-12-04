@@ -1,5 +1,5 @@
 # Advent of code 2019 edition
 
-# Goal
+# Goals
 * Get better at swift
 * See goal 1
