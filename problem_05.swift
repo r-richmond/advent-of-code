@@ -28,17 +28,21 @@ func process(_ op_code: [Int], input: Int) {
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = param_1 + param_2
+      // print("\(param_1 ) + \(param_2) stored to \(op_codes[pos+3])")
       pos += 4
     case 2:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = param_1 * param_2
+      // print("\(param_1 ) * \(param_2) stored to \(op_codes[pos+3])")
       pos += 4
     case 3:
       op_codes[op_codes[pos+1]] = input
+      // print("\(input ) stored to \(op_codes[pos+1])")
       pos += 2
     case 4:
-      print(op_codes[op_codes[pos+1]])
+      param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
+      print(param_1)
       pos += 2
     case 5:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
