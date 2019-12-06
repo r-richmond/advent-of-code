@@ -17,29 +17,30 @@ func process(_ op_code: [Int], input: Int) {
   var param_1: Int
   var param_2: Int
 
-  while true {
+  processLoop: while true {
       instruction = op_codes[pos] % 100
       param_mode_1 = op_codes[pos] / 100 % 10
       param_mode_2 = op_codes[pos] / 1000 % 10
       // param_mode_3 = op_codes[pos] / 10000 % 10
 
-    if instruction == 1 {
+    switch instruction {
+    case 1:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = param_1 + param_2
       pos += 4
-    } else if instruction == 2 {
+    case 2:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = param_1 * param_2
       pos += 4
-    } else if instruction == 3 {
+    case 3:
       op_codes[op_codes[pos+1]] = input
       pos += 2
-    } else if instruction == 4 {
+    case 4:
       print(op_codes[op_codes[pos+1]])
       pos += 2
-    } else if instruction == 5 {
+    case 5:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       if param_1 != 0 {
@@ -47,7 +48,7 @@ func process(_ op_code: [Int], input: Int) {
       } else {
         pos += 3
       }
-    } else if instruction == 6 {
+    case 6:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       if param_1 == 0 {
@@ -55,19 +56,22 @@ func process(_ op_code: [Int], input: Int) {
       } else {
         pos += 3
       }
-    } else if instruction == 7 {
+    case 7:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = (param_1 < param_2 ? 1 : 0)
       pos += 4
-    } else if instruction == 8 {
+    case 8:
       param_1 = (param_mode_1 == 0 ? op_codes[op_codes[pos+1]] : op_codes[pos+1])
       param_2 = (param_mode_2 == 0 ? op_codes[op_codes[pos+2]] : op_codes[pos+2])
       op_codes[op_codes[pos+3]] = (param_1 < param_2 ? 1 : 0)
       op_codes[op_codes[pos+3]] = (param_1 == param_2 ? 1 : 0)
       pos += 4
-    } else if instruction == 99 {
-      break
+    case 99:
+      break processLoop
+    default:
+      print("Error Unknown Instructioned Encountered")
+      break processLoop
     }
   }
 }
@@ -76,5 +80,6 @@ func process(_ op_code: [Int], input: Int) {
 
 print("Part 1 was is the last value")
 process(op_code, input:1)
+
 print("Part 2 is: ")
 process(op_code, input:5)
