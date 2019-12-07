@@ -37,3 +37,60 @@ for (_, p) in mapping {
   }
 }
 print("Part 1: total direct and indirect orbits \(total)")
+
+class Planet {
+  var id: String
+  var parent_id: String
+  var distance: Int
+
+  init(id: String, parent_id: String) {
+    self.id = id
+    self.parent_id = parent_id
+    self.distance = 0
+  }
+
+}
+
+func processIntoDictPlanet(_ input: [String: String]) -> [String: Planet] {
+  var result: [String: Planet] = [:]
+  for (c, p) in input{
+    result[c] = Planet(id: c, parent_id: p)
+  }
+  return result
+}
+
+let mappingPlanet = processIntoDictPlanet(mapping)
+
+let yourPlanet = mappingPlanet["YOU"]!
+let santaPlanet = mappingPlanet["SAN"]!
+var currentDistance = -1
+yourPlanet.distance = currentDistance
+var currentPlanet = yourPlanet
+while true {
+  if mappingPlanet[currentPlanet.parent_id] != nil {
+    currentPlanet = mappingPlanet[currentPlanet.parent_id]!
+    currentDistance += 1
+    currentPlanet.distance = currentDistance
+  } else {
+    break
+  }
+}
+
+currentDistance = 0
+currentPlanet = santaPlanet
+var parentPlanet: Planet
+var finalDistance : Int
+while true {
+  if mappingPlanet[currentPlanet.parent_id] != nil {
+    parentPlanet = mappingPlanet[currentPlanet.parent_id]!
+    if parentPlanet.distance == 0 {
+      currentPlanet = mappingPlanet[currentPlanet.parent_id]!
+      currentDistance += 1
+      currentPlanet.distance = currentDistance
+    } else {
+      finalDistance = currentPlanet.distance + parentPlanet.distance
+      print("Part 2: total distance of \(finalDistance) | \(currentPlanet.distance) + & \(parentPlanet.distance)")
+      break
+    }
+  }
+}
