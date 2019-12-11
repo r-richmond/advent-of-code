@@ -83,23 +83,44 @@ struct Image {
     return minLayer
   }
 
-  // func renderResult() -> [String] {
-  //   for line in self.lines {
-  //
-  //   }
-  //   return ["hello"]
-  // }
+  func renderString() -> [String] {
+    var result: [String] = []
+    for layer in self.layers {
+      for line in layer.lines {
+        result.append(line)
+      }
+    }
+    return result
+  }
+
+  func calcResult() -> [String] {
+    var result = [String](repeating: "2", count: self.width * self.height)
+    var counter: Int
+    for layer in self.layers {
+      counter = 0
+      for line in layer.lines {
+        for char in line {
+          if result[counter] == "2" {
+            result[counter] = ( String(char) == "0" ? " " : String(char))
+          }
+          counter += 1
+        }
+      }
+    }
+    return result
+  }
+
+  func renderResult() {
+    let rendered = self.calcResult()
+    for i in stride(from: 0, to: rendered.count, by: width) {
+      print(rendered[i..<i+width].joined(separator: ""))
+    }
+  }
 }
 
 let messageTest = "123456789012"
 let imageTest = Image(value: messageTest, width:3, height: 2)
-var result : [String] = []
-for layer in imageTest.layers {
-  for line in layer.lines {
-    result.append(line)
-  }
-}
-print("the test found the expected result:", result == ["123", "456", "789", "012"])
+print("Test one passed:", imageTest.renderString() == ["123", "456", "789", "012"])
 
 let message = readFileFrom(path: "problem_08.txt")
 let image = Image(value: message, width: 25, height: 6)
@@ -113,3 +134,6 @@ for line in minLayer.lines {
   minLayerTwo += line.filter { $0 == "2" }.count
 }
 print("Part 1 answer = \(minLayerOne * minLayerTwo)")
+
+print("Part 2 hidden message: ")
+image.renderResult()
