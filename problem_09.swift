@@ -4,10 +4,11 @@ let op_code_test_1 = [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]
 let op_code_test_2 = [1102,34915192,34915192,7,4,7,99,0]
 let op_code_test_3 = [104,1125899906842624,99]
 
-func process(_ op_code: [Int], input: Int, debug:Bool=false) -> [Int] {
+func process(_ op_code: [Int], input: [Int], debug:Bool=false) -> [Int] {
   var pos = 0
   var relative_pos = 0
-  var op_codes = op_code + [Int](repeating: 0, count: 100000)
+  var in_pos = 0
+  var op_codes = op_code + [Int](repeating: 0, count: 10000)
 
   var instruction: Int
   var param_mode_1: Int
@@ -79,7 +80,12 @@ func process(_ op_code: [Int], input: Int, debug:Bool=false) -> [Int] {
       op_codes[param_3] = op_codes[param_1] * op_codes[param_2]
       pos += 4
     case 3: // store input
-      op_codes[param_1] = input
+      if in_pos == input.count {
+        print("more inputs requested than provided")
+        break processLoop
+      }
+      op_codes[param_1] = input[in_pos]
+      in_pos += 1
       pos += 2
     case 4: // store result
       result.append(op_codes[param_1])
@@ -115,9 +121,9 @@ func process(_ op_code: [Int], input: Int, debug:Bool=false) -> [Int] {
   return result
 }
 //
-print("test 1 passed:", process(op_code_test_1, input: 1) == op_code_test_1)
-print("test 2 passed:", process(op_code_test_2, input: 1) == [1219070632396864])
-print("test 3 passed:", process(op_code_test_3, input: 1) == [1125899906842624])
+print("test 1 passed:", process(op_code_test_1, input: [1]) == op_code_test_1)
+print("test 2 passed:", process(op_code_test_2, input: [1]) == [1219070632396864])
+print("test 3 passed:", process(op_code_test_3, input: [1]) == [1125899906842624])
 
-print("Part 1: \(process(op_code, input:1, debug:false))")
-print("Part 2: \(process(op_code, input:2, debug:false))")
+print("Part 1: \(process(op_code, input:[1], debug:false))")
+print("Part 2: \(process(op_code, input:[2], debug:false))")
