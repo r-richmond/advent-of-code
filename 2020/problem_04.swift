@@ -94,12 +94,16 @@ struct Id {
     let is_iyr: Bool = self.raw_values["iyr"] != nil && 2010 <= Int(self.raw_values["iyr"]!)! && 2020 >= Int(self.raw_values["iyr"]!)!
     let is_eyr: Bool = self.raw_values["eyr"] != nil && 2020 <= Int(self.raw_values["eyr"]!)! && 2030 >= Int(self.raw_values["eyr"]!)!
     var is_hgt: Bool = false
-    if self.raw_values["hgt"] != nil && (self.raw_values["hgt"]!.contains("in") || self.raw_values["hgt"]!.contains("cm")) {
-      let hgt_num = Int(String(self.raw_values["hgt"]![0..<self.raw_values["hgt"]!.count - 2]))!
-      if self.raw_values["hgt"]!.hasSuffix("cm") {
-        is_hgt = hgt_num >= 150 && hgt_num <= 193
-      } else if self.raw_values["hgt"]!.hasSuffix("in")  {
-        is_hgt = hgt_num >= 59 && hgt_num <= 76
+    if let hgt_value = self.raw_values["hgt"] {
+      let allowed_suffixes = ["cm", "in"]
+      if allowed_suffixes.contains(where: hgt_value.contains) {
+        let hgt_value_num = Int(String(hgt_value[0..<hgt_value.count - 2]))!
+        if hgt_value.hasSuffix("cm") {
+          is_hgt = hgt_value_num >= 150 && hgt_value_num <= 193
+        }
+        if hgt_value.hasSuffix("in") {
+          is_hgt = hgt_value_num >= 59 && hgt_value_num <= 76
+        }
       }
     }
     var is_hcl: Bool = false
@@ -119,7 +123,6 @@ struct Id {
         is_pid = pid_value.count == 9
       }
     }
-    print(is_byr, is_iyr, is_eyr, is_hgt, is_hcl, is_ecl, is_pid)
     return is_byr && is_iyr && is_eyr && is_hgt && is_hcl && is_ecl && is_pid
   }
 
