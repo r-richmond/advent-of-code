@@ -77,9 +77,6 @@ class Plane:
         self.max_y = max(t[1] for t in self.seats.keys())
 
     def get_occupied_adjacent_seats(self, pos_x: int, pos_y: int) -> int:
-        if pos_x == 8 and pos_y == 1:
-            pass
-            # print("break")
         adj_seats = 0
         for direction_to_check in ((-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)):
             if self._get_occupied_direction(direction=direction_to_check, pos_x=pos_x, pos_y=pos_y):
