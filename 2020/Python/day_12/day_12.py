@@ -56,7 +56,6 @@ class Person:
         self.waypoint = [10, 1]
 
     def move(self, instruction: Instruction):
-        print(self, instruction)
         if instruction.direction == Direction.NORTH:
             self.pos_y += instruction.amount
         elif instruction.direction == Direction.EAST:
